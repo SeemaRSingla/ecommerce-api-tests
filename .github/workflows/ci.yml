@@ -31,12 +31,35 @@ jobs:
 
     - name: Run tests with mock server
       run: |
+        # Start mock server
         npm run mock-server > /tmp/mock-server.log 2>&1 &
         MOCK_PID=$!
-        sleep 3
+        echo "Mock server PID: $MOCK_PID"
+        
+        # Wait for server to be ready with health check
+        for i in {1..30}; do
+          if curl -s http://localhost:4000/products > /dev/null 2>&1; then
+            echo "✅ Mock server is ready!"
+            break
+          fi
+          if [ $i -eq 30 ]; then
+            echo "❌ Mock server failed to start"
+            cat /tmp/mock-server.log
+            exit 1
+          fi
+          echo "Waiting for mock server... ($i/30)"
+          sleep 1
+        done
+        
+        # Run tests
         npm run test:mock
+        TEST_EXIT=$?
+        
+        # Cleanup
         kill $MOCK_PID 2>/dev/null || true
         wait $MOCK_PID 2>/dev/null || true
+        
+        exit $TEST_EXIT
 
     - name: Upload test results
       if: always()
