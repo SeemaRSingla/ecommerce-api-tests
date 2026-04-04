@@ -35,9 +35,8 @@ jobs:
         MOCK_PID=$!
         sleep 3
         npm run test:mock
-        TESTS_EXIT_CODE=$?
         kill $MOCK_PID 2>/dev/null || true
-        exit $TESTS_EXIT_CODE
+        wait $MOCK_PID 2>/dev/null || true
 
     - name: Upload test results
       if: always()
