@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "ecommerce-api-tests",
   "version": "1.0.0",
   "description": "Comprehensive API testing suite for e-commerce platform - Testing REST & GraphQL APIs",

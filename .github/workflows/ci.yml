@@ -30,6 +30,8 @@ jobs:
       run: npm run lint 2>/dev/null || echo "No linter configured"
 
     - name: Run tests with mock server
+      env:
+        NODE_OPTIONS: "--loader ts-node/esm --no-warnings"
       run: |
         # Start mock server
         npm run mock-server > /tmp/mock-server.log 2>&1 &
