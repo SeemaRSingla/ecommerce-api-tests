@@ -1,0 +1,17 @@
+{
+  "api": {
+    "apiKey": "demo-api-key-12345",
+    "username": "testuser",
+    "password": "testpassword123"
+  },
+  "testProducts": {
+    "validProductId": "PROD-12345",
+    "invalidProductId": "INVALID-99999",
+    "category": "electronics"
+  },
+  "testSearchQueries": {
+    "query1": "laptop",
+    "query2": "wireless earbuds",
+    "query3": "phone case"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "ecommerce-api-tests",
+  "version": "1.0.0",
+  "description": "Comprehensive API testing suite for e-commerce platform - Testing REST & GraphQL APIs",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "mock-server": "ts-node mock-server.ts",
+    "test:mock": "MOCK_API_PORT=4000 API_URL=http://localhost:4000 GRAPHQL_URL=http://localhost:4000/graphql vitest run"
+  },
+  "keywords": [
+    "api-testing",
+    "graphql",
+    "rest-api",
+    "automation",
+    "quality-assurance",
+    "vitest",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.10.1",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "ts-node": "^10.9.2",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2"
+  },
+  "dependencies": {
+    "graphql-request": "^7.3.4"
+  }
+}
