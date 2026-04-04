@@ -16,7 +16,7 @@ export function buildBearerToken(token: string): string {
 export function buildApiKeyHeader(apiKey: string): Record<string, string> {
   return {
     'X-API-Key': apiKey,
-    'Authorization': `Bearer ${apiKey}`
+    Authorization: `Bearer ${apiKey}`,
   };
 }
 

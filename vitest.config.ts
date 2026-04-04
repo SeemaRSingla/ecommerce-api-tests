@@ -7,7 +7,7 @@ export default defineConfig({
     setupFiles: './test/setup.ts',
     testTimeout: 15000,
     coverage: {
-      provider: 'v8'
-    }
+      provider: 'v8',
+    },
   },
 });

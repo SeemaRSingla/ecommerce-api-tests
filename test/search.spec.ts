@@ -1,7 +1,7 @@
 /**
  * test/search.spec.ts
  * Search Functionality Tests
- * 
+ *
  * Tests search, filtering, and sorting across different scenarios
  */
 
@@ -20,7 +20,7 @@ describe('Search API - Query Functionality', () => {
     const queryParams = buildQueryString({
       q: searchTerm,
       limit: 20,
-      offset: 0
+      offset: 0,
     });
 
     const url = `${API_BASE_URL}/search?${queryParams}`;
@@ -29,8 +29,8 @@ describe('Search API - Query Functionality', () => {
       method: 'GET',
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.status === 404 || response.status === 501) {
@@ -48,7 +48,7 @@ describe('Search API - Query Functionality', () => {
 
     await sendTestMetrics(data.totalResults, 'ecommerce.search.results', [
       `keyword:${searchTerm}`,
-      'endpoint:/search'
+      'endpoint:/search',
     ]);
 
     console.log(`✅ Search for "${searchTerm}" returned ${data.totalResults} results`);
@@ -59,7 +59,7 @@ describe('Search API - Query Functionality', () => {
       q: 'electronics',
       minPrice: 50,
       maxPrice: 500,
-      limit: 20
+      limit: 20,
     });
 
     const url = `${API_BASE_URL}/search?${queryParams}`;
@@ -68,8 +68,8 @@ describe('Search API - Query Functionality', () => {
       method: 'GET',
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.status === 404 || response.status === 501) {
@@ -100,7 +100,7 @@ describe('Search API - Query Functionality', () => {
       q: testData.testSearchQueries.query2,
       sortBy: 'price',
       sortOrder: 'asc',
-      limit: 20
+      limit: 20,
     });
 
     const url = `${API_BASE_URL}/search?${queryParams}`;
@@ -109,8 +109,8 @@ describe('Search API - Query Functionality', () => {
       method: 'GET',
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.status === 404 || response.status === 501) {
@@ -142,7 +142,7 @@ describe('Search API - Query Functionality', () => {
     const queryParams = buildQueryString({
       q: 'test',
       limit: limit,
-      offset: offset
+      offset: offset,
     });
 
     const url = `${API_BASE_URL}/search?${queryParams}`;
@@ -151,8 +151,8 @@ describe('Search API - Query Functionality', () => {
       method: 'GET',
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.status === 404 || response.status === 501) {
@@ -179,7 +179,7 @@ describe('Search API - Query Functionality', () => {
   it('Should return empty results for non-existent query', async () => {
     const queryParams = buildQueryString({
       q: 'xyznonexistentproductabc123',
-      limit: 20
+      limit: 20,
     });
 
     const url = `${API_BASE_URL}/search?${queryParams}`;
@@ -188,8 +188,8 @@ describe('Search API - Query Functionality', () => {
       method: 'GET',
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.status === 404 || response.status === 501) {
@@ -211,7 +211,7 @@ describe('Search API - Query Functionality', () => {
   it('Should validate search response structure', async () => {
     const queryParams = buildQueryString({
       q: testData.testSearchQueries.query3,
-      limit: 10
+      limit: 10,
     });
 
     const url = `${API_BASE_URL}/search?${queryParams}`;
@@ -220,8 +220,8 @@ describe('Search API - Query Functionality', () => {
       method: 'GET',
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     if (response.status === 404 || response.status === 501) {

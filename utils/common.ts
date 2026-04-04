@@ -3,7 +3,7 @@
  * - Common utility functions for tests
  */
 
-export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function normalizeContent(content: string): string {
   return content.replace(/\r\n/g, '\n').trim();

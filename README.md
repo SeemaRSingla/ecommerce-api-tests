@@ -5,6 +5,7 @@ A comprehensive, production-ready API testing suite for e-commerce platforms. De
 ## Overview
 
 This project showcases:
+
 - ✅ **REST API Testing** - Complete CRUD operations validation
 - ✅ **GraphQL Testing** - Query validation and schema type checking
 - ✅ **Search Functionality** - Filtering, sorting, and pagination
@@ -15,12 +16,12 @@ This project showcases:
 
 ## Tech Stack
 
-| Technology | Purpose |
-|-----------|---------|
-| **Vitest** | Modern test framework |
-| **TypeScript** | Type-safe testing code |
+| Technology          | Purpose                |
+| ------------------- | ---------------------- |
+| **Vitest**          | Modern test framework  |
+| **TypeScript**      | Type-safe testing code |
 | **GraphQL Request** | GraphQL client testing |
-| **Node.js 22+** | Runtime |
+| **Node.js 22+**     | Runtime                |
 
 ## Project Structure
 
@@ -99,36 +100,43 @@ Test data is stored in `test-data.json` for easy reference:
 ## Running Tests
 
 ### Run All Tests
+
 ```bash
 npm test
 ```
 
 ### Run Tests in Watch Mode
+
 ```bash
 npm run test:watch
 ```
 
 ### Run Tests with UI
+
 ```bash
 npm run test:ui
 ```
 
 ### Run Tests with Coverage
+
 ```bash
 npm run test:coverage
 ```
 
 ### Run Specific Test File
+
 ```bash
 npm test -- test/products.spec.ts
 ```
 
 ### Run Tests Matching Pattern
+
 ```bash
 npm test -- --grep "Should return"
 ```
 
 ### CI/CD - Single Run
+
 ```bash
 npm run test:ci
 ```
@@ -148,6 +156,7 @@ Tests core REST API functionality:
 ```
 
 **Key Features:**
+
 - Parameterized requests
 - Error handling (404, 403 responses)
 - Data type validation
@@ -165,6 +174,7 @@ Tests GraphQL queries and mutations:
 ```
 
 **Key Features:**
+
 - Parameterized GraphQL queries
 - Response schema validation
 - Type safety checks
@@ -184,6 +194,7 @@ Tests search, filtering, and sorting:
 ```
 
 **Key Features:**
+
 - Query string building
 - Filter validation
 - Sort order verification
@@ -191,30 +202,33 @@ Tests search, filtering, and sorting:
 
 ## Test Coverage
 
-| Scenario | REST | GraphQL | Search |
-|----------|------|---------|--------|
-| Basic Operations | ✅ | ✅ | ✅ |
-| Filtering | ✅ | ✅ | ✅ |
-| Pagination | ✅ | ✅ | ✅ |
-| Sorting | ✅ | ✅ | ✅ |
-| Type Validation | ✅ | ✅ | ✅ |
-| Error Handling | ✅ | ✅ | ✅ |
+| Scenario         | REST | GraphQL | Search |
+| ---------------- | ---- | ------- | ------ |
+| Basic Operations | ✅   | ✅      | ✅     |
+| Filtering        | ✅   | ✅      | ✅     |
+| Pagination       | ✅   | ✅      | ✅     |
+| Sorting          | ✅   | ✅      | ✅     |
+| Type Validation  | ✅   | ✅      | ✅     |
+| Error Handling   | ✅   | ✅      | ✅     |
 
 ## Authentication
 
 The project supports multiple authentication methods:
 
 ### API Key
+
 ```typescript
 const headers = buildApiKeyHeader(apiKey);
 ```
 
 ### Bearer Token
+
 ```typescript
 const token = buildBearerToken(jwtToken);
 ```
 
 ### Basic Auth
+
 ```typescript
 const auth = buildBasicAuthHeader(username, password);
 ```
@@ -227,13 +241,14 @@ Send test metrics to Datadog:
 
 ```typescript
 await sendTestMetrics(
-  count,                    // Metric value
+  count, // Metric value
   'ecommerce.product.count', // Metric name
-  ['endpoint:/products']    // Tags
+  ['endpoint:/products'] // Tags
 );
 ```
 
 Visualize metrics for:
+
 - Product counts over time
 - Search result trends
 - API performance monitoring
@@ -242,26 +257,31 @@ Visualize metrics for:
 ## Best Practices Implemented
 
 ### ✅ Code Organization
+
 - Separated concerns (auth, reporting, common)
 - Reusable utilities
 - DRY principles
 
 ### ✅ Test Structure
+
 - Clear test names
 - Comprehensive assertions
 - Step-by-step validation
 
 ### ✅ Error Handling
+
 - Graceful degradation
 - Meaningful error messages
 - Demo-safe endpoints (handles 404s)
 
 ### ✅ Security
+
 - No hardcoded credentials
 - Environment-based config
 - Secure secrets management
 
 ### ✅ Maintainability
+
 - TypeScript for type safety
 - Well-documented code
 - Modular design
@@ -269,16 +289,20 @@ Visualize metrics for:
 ## Common Issues & Solutions
 
 ### Issue: Connection Refused
+
 **Cause:** API server not running
-**Solution:** 
+**Solution:**
+
 ```bash
 # Check if API is running
 curl https://api.example.com/health
 ```
 
 ### Issue: 401 Unauthorized
+
 **Cause:** Invalid API key
 **Solution:**
+
 ```bash
 # Check environment variables
 echo $API_KEY
@@ -286,8 +310,10 @@ echo $API_KEY
 ```
 
 ### Issue: Tests Timeout
+
 **Cause:** API is slow or not responding
 **Solution:**
+
 - Increase timeout in `vitest.config.ts`
 - Check API performance
 - Reduce number of parallel tests
@@ -297,6 +323,7 @@ echo $API_KEY
 ### Add New Test Suite
 
 1. Create new file in `test/`:
+
 ```typescript
 // test/new-feature.spec.ts
 import { describe, it, expect } from 'vitest';
@@ -309,6 +336,7 @@ describe('New API Feature', () => {
 ```
 
 2. Run tests:
+
 ```bash
 npm test -- test/new-feature.spec.ts
 ```
@@ -320,6 +348,7 @@ npm test -- test/new-feature.spec.ts
 3. Import in test files
 
 Example:
+
 ```typescript
 // utils/validators.ts
 export function validateEmail(email: string): boolean {
@@ -368,6 +397,7 @@ env:
 ## Contributing
 
 Guidelines for extending:
+
 1. Follow TypeScript conventions
 2. Add comprehensive test cases
 3. Update documentation
@@ -379,31 +409,37 @@ Guidelines for extending:
 This project demonstrates:
 
 **1. API Testing Expertise**
+
 - REST API lifecycle (GET/POST/PUT/DELETE)
 - GraphQL query validation
 - Response structure validation
 
 **2. Test Infrastructure**
+
 - TypeScript for type safety
 - Vitest framework
 - Test setup and configuration
 
 **3. Best Practices**
+
 - Parametrized testing
 - Error scenario handling
 - Clear assertions
 
 **4. Secure Development**
+
 - Environment-based credentials
 - No hardcoded secrets
 - Secure auth strategies
 
 **5. Monitoring**
+
 - Datadog metrics integration
 - Performance tracking
 - Real-time visibility
 
 **6. Code Quality**
+
 - Modular architecture
 - Reusable utilities
 - Well-documented code
@@ -411,6 +447,7 @@ This project demonstrates:
 ## Troubleshooting
 
 ### Tests won't run
+
 ```bash
 # Clear node_modules and reinstall
 rm -rf node_modules package-lock.json
@@ -419,6 +456,7 @@ npm test
 ```
 
 ### TypeScript errors
+
 ```bash
 # Check TypeScript config
 npm run test -- --version
@@ -428,6 +466,7 @@ npx tsc --noEmit
 ```
 
 ### Port already in use
+
 ```bash
 # Find process using port
 lsof -i :8080

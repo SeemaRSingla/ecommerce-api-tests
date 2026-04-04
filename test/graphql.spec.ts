@@ -1,7 +1,7 @@
 /**
  * test/graphql.spec.ts
  * GraphQL API Tests
- * 
+ *
  * Tests GraphQL queries for product search and filtering
  */
 
@@ -19,8 +19,8 @@ describe('Product API - GraphQL Queries', () => {
     const client = new GraphQLClient(GRAPHQL_ENDPOINT, {
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     const query = gql`
@@ -39,7 +39,7 @@ describe('Product API - GraphQL Queries', () => {
     try {
       const data = await client.request(query, {
         limit: 10,
-        offset: 0
+        offset: 0,
       });
 
       expect(data).toBeDefined();
@@ -58,7 +58,7 @@ describe('Product API - GraphQL Queries', () => {
       }
 
       await sendTestMetrics(data.productCount, 'ecommerce.graphql.product_count', [
-        'query:GetProducts'
+        'query:GetProducts',
       ]);
 
       console.log('✅ GraphQL products query successful:', data.productCount, 'total products');
@@ -76,8 +76,8 @@ describe('Product API - GraphQL Queries', () => {
     const client = new GraphQLClient(GRAPHQL_ENDPOINT, {
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     const query = gql`
@@ -95,7 +95,7 @@ describe('Product API - GraphQL Queries', () => {
 
     try {
       const data = await client.request(query, {
-        searchTerm: testData.testSearchQueries.query1
+        searchTerm: testData.testSearchQueries.query1,
       });
 
       expect(data).toBeDefined();
@@ -112,7 +112,7 @@ describe('Product API - GraphQL Queries', () => {
       }
 
       await sendTestMetrics(data.searchResultCount, 'ecommerce.graphql.search_results', [
-        `query:${testData.testSearchQueries.query1}`
+        `query:${testData.testSearchQueries.query1}`,
       ]);
 
       console.log('✅ GraphQL search query successful:', data.searchResultCount, 'results');
@@ -129,17 +129,13 @@ describe('Product API - GraphQL Queries', () => {
     const client = new GraphQLClient(GRAPHQL_ENDPOINT, {
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     const query = gql`
       query ProductsByCategory($category: String!, $minPrice: Float, $maxPrice: Float) {
-        productsByCategory(
-          category: $category
-          minPrice: $minPrice
-          maxPrice: $maxPrice
-        ) {
+        productsByCategory(category: $category, minPrice: $minPrice, maxPrice: $maxPrice) {
           id
           name
           price
@@ -153,7 +149,7 @@ describe('Product API - GraphQL Queries', () => {
       const data = await client.request(query, {
         category: testData.testProducts.category,
         minPrice: 0,
-        maxPrice: 1000
+        maxPrice: 1000,
       });
 
       expect(data).toBeDefined();
@@ -183,8 +179,8 @@ describe('Product API - GraphQL Queries', () => {
     const client = new GraphQLClient(GRAPHQL_ENDPOINT, {
       headers: {
         'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     const query = gql`
@@ -202,7 +198,7 @@ describe('Product API - GraphQL Queries', () => {
 
     try {
       const data = await client.request(query, {
-        id: testData.testProducts.validProductId
+        id: testData.testProducts.validProductId,
       });
 
       // Validate type safety

@@ -1,12 +1,11 @@
 /**
  * test/products.spec.ts
  * REST API Tests for Product Management
- * 
+ *
  * Tests product listing, retrieval, and filtering
  */
 
 import { describe, it, expect } from 'vitest';
-import { buildApiKeyHeader } from './utils/auth';
 import { sendTestMetrics } from './utils/datadog-reporter';
 import testData from '../test-data.json';
 
@@ -17,20 +16,20 @@ describe('Product API - REST Endpoints', () => {
 
   it('GET /products - Should return list of products', async () => {
     const url = `${API_BASE_URL}/products?limit=10`;
-    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': apiKey
-      }
+        'X-API-Key': apiKey,
+      },
     });
 
     expect(response.ok).toBe(true);
     expect(response.status).toBe(200);
 
     const data = await response.json();
-    
+
     expect(data).toBeDefined();
     expect(Array.isArray(data.products)).toBe(true);
     expect(data.products.length).toBeGreaterThanOrEqual(0);
@@ -38,7 +37,7 @@ describe('Product API - REST Endpoints', () => {
     // Send metrics to Datadog
     await sendTestMetrics(data.products.length, 'ecommerce.product.count', [
       'endpoint:/products',
-      'method:GET'
+      'method:GET',
     ]);
 
     console.log('✅ Product list retrieved:', data.products.length, 'products');
@@ -52,8 +51,8 @@ describe('Product API - REST Endpoints', () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': apiKey
-      }
+        'X-API-Key': apiKey,
+      },
     });
 
     if (response.status === 404) {
@@ -62,7 +61,7 @@ describe('Product API - REST Endpoints', () => {
     }
 
     expect(response.ok).toBe(true);
-    
+
     const product = await response.json();
 
     expect(product).toBeDefined();
@@ -83,8 +82,8 @@ describe('Product API - REST Endpoints', () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': apiKey
-      }
+        'X-API-Key': apiKey,
+      },
     });
 
     if (response.status === 404) {
@@ -93,7 +92,7 @@ describe('Product API - REST Endpoints', () => {
     }
 
     expect(response.ok).toBe(true);
-    
+
     const data = await response.json();
 
     expect(data).toBeDefined();
@@ -117,16 +116,16 @@ describe('Product API - REST Endpoints', () => {
       description: 'A test product for API testing',
       price: 29.99,
       category: 'test',
-      stock: 100
+      stock: 100,
     };
 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-Key': apiKey
+        'X-API-Key': apiKey,
       },
-      body: JSON.stringify(newProduct)
+      body: JSON.stringify(newProduct),
     });
 
     if (response.status === 403 || response.status === 401) {
@@ -140,7 +139,7 @@ describe('Product API - REST Endpoints', () => {
     }
 
     expect(response.ok).toBe(true);
-    
+
     const createdProduct = await response.json();
 
     expect(createdProduct).toBeDefined();
@@ -156,8 +155,8 @@ describe('Product API - REST Endpoints', () => {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'X-API-Key': apiKey
-      }
+        'X-API-Key': apiKey,
+      },
     });
 
     expect(response.ok).toBe(true);
@@ -170,7 +169,7 @@ describe('Product API - REST Endpoints', () => {
 
     if (Array.isArray(data.products) && data.products.length > 0) {
       const product = data.products[0];
-      
+
       // Validate product structure
       expect(product.id).toBeDefined();
       expect(product.name).toBeDefined();

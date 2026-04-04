@@ -2,9 +2,9 @@ name: CI - API Tests
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   test:
@@ -15,67 +15,73 @@ jobs:
         node-version: [20.x, 22.x]
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run linter
-      run: npm run lint 2>/dev/null || echo "No linter configured"
+      - name: Run linter
+        run: npm run lint
 
-    - name: Run tests with mock server
-      env:
-        NODE_OPTIONS: "--loader ts-node/esm --no-warnings"
-      run: |
-        # Start mock server
-        npm run mock-server > /tmp/mock-server.log 2>&1 &
-        MOCK_PID=$!
-        echo "Mock server PID: $MOCK_PID"
-        
-        # Wait for server to be ready with health check
-        for i in {1..30}; do
-          if curl -s http://localhost:4000/products > /dev/null 2>&1; then
-            echo "✅ Mock server is ready!"
-            break
-          fi
-          if [ $i -eq 30 ]; then
-            echo "❌ Mock server failed to start"
-            cat /tmp/mock-server.log
-            exit 1
-          fi
-          echo "Waiting for mock server... ($i/30)"
-          sleep 1
-        done
-        
-        # Run tests
-        npm run test:mock
-        TEST_EXIT=$?
-        
-        # Cleanup
-        kill $MOCK_PID 2>/dev/null || true
-        wait $MOCK_PID 2>/dev/null || true
-        
-        exit $TEST_EXIT
+      - name: Check code formatting
+        run: npm run format:check
 
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results-node-${{ matrix.node-version }}
-        path: |
-          coverage/
-          **/*.log
-        if-no-files-found: ignore
+      - name: Type check
+        run: npm run type-check
 
-    - name: Test Summary
-      if: always()
-      run: |
-        echo "## Test Execution Summary" >> $GITHUB_STEP_SUMMARY
-        echo "- **Node Version**: ${{ matrix.node-version }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **Status**: ✅ All tests passed" >> $GITHUB_STEP_SUMMARY
+      - name: Run tests with mock server
+        env:
+          NODE_OPTIONS: '--loader ts-node/esm --no-warnings'
+        run: |
+          # Start mock server
+          npm run mock-server > /tmp/mock-server.log 2>&1 &
+          MOCK_PID=$!
+          echo "Mock server PID: $MOCK_PID"
+
+          # Wait for server to be ready with health check
+          for i in {1..30}; do
+            if curl -s http://localhost:4000/products > /dev/null 2>&1; then
+              echo "✅ Mock server is ready!"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "❌ Mock server failed to start"
+              cat /tmp/mock-server.log
+              exit 1
+            fi
+            echo "Waiting for mock server... ($i/30)"
+            sleep 1
+          done
+
+          # Run tests
+          npm run test:mock
+          TEST_EXIT=$?
+
+          # Cleanup
+          kill $MOCK_PID 2>/dev/null || true
+          wait $MOCK_PID 2>/dev/null || true
+
+          exit $TEST_EXIT
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-node-${{ matrix.node-version }}
+          path: |
+            coverage/
+            **/*.log
+          if-no-files-found: ignore
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Node Version**: ${{ matrix.node-version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ✅ All tests passed" >> $GITHUB_STEP_SUMMARY

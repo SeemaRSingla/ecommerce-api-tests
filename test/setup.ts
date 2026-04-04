@@ -13,7 +13,7 @@ beforeAll(async () => {
   if (!API_KEY) {
     console.warn('[test/setup] API_KEY not provided. Using mock/public endpoints.');
   }
-  
+
   console.log('[test/setup] API_URL:', API_URL);
   console.log('[test/setup] Test environment ready');
 });
