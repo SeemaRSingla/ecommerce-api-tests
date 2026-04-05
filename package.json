@@ -29,7 +29,7 @@
     "vitest",
     "typescript"
   ],
-  "author": "Your Name",
+  "author": "Seema Singla",
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
