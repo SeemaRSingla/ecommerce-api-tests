@@ -59,8 +59,8 @@ jobs:
             sleep 1
           done
 
-          # Run tests
-          npm run test:mock
+          # Run tests with coverage
+          npm run test:coverage
           TEST_EXIT=$?
 
           # Cleanup

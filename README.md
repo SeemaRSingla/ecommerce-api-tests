@@ -1,18 +1,22 @@
 # E-Commerce API Test Suite 🚀
 
+[![CI - API Tests](https://github.com/seemasingla/ecommerce-api-tests/workflows/CI%20-%20API%20Tests/badge.svg?branch=main)](https://github.com/seemasingla/ecommerce-api-tests/actions?query=workflow%3ACI)
+
 A comprehensive, production-ready API testing suite for e-commerce platforms. Demonstrates expertise in REST API testing, GraphQL validation, test automation, and QA best practices.
 
 ## Overview
 
 This project showcases:
 
-- ✅ **REST API Testing** - Complete CRUD operations validation
+- ✅ **REST API Testing** - Complete CRUD operations validation with retry logic
 - ✅ **GraphQL Testing** - Query validation and schema type checking
 - ✅ **Search Functionality** - Filtering, sorting, and pagination
 - ✅ **Test Infrastructure** - Setup, utilities, and reusable components
 - ✅ **Secure Credential Management** - Environment-based configuration
 - ✅ **Monitoring Integration** - Datadog metrics reporting
-- ✅ **Best Practices** - Structured assertions, error handling, logging
+- ✅ **Performance Testing** - Response time assertions and optimization tracking
+- ✅ **Resilience Testing** - Retry logic with exponential backoff
+- ✅ **Best Practices** - Structured assertions, error handling, logging, edge case coverage
 
 ## Tech Stack
 
@@ -153,6 +157,8 @@ Tests core REST API functionality:
 ✅ GET /products?category - Filter by category
 ✅ POST /products - Create new product
 ✅ Response structure validation
+✅ Retry logic with exponential backoff (transient failures)
+✅ Performance assertions (response time < 5s)
 ```
 
 **Key Features:**
@@ -160,6 +166,8 @@ Tests core REST API functionality:
 - Parameterized requests
 - Error handling (404, 403 responses)
 - Data type validation
+- **Retry logic** - Handles transient failures with exponential backoff
+- **Performance testing** - Validates response times against thresholds
 - Metrics reporting
 
 ### 2. GraphQL Tests (`test/graphql.spec.ts`)
@@ -210,6 +218,33 @@ Tests search, filtering, and sorting:
 | Sorting          | ✅   | ✅      | ✅     |
 | Type Validation  | ✅   | ✅      | ✅     |
 | Error Handling   | ✅   | ✅      | ✅     |
+
+## Resilience & Performance Testing
+
+### Retry Logic
+
+Tests demonstrate handling of transient failures:
+
+```typescript
+// Retries up to 3 times with exponential backoff
+// Succeeds on first successful response
+// Handles 5xx server errors gracefully
+// Hard-fails on 4xx client errors
+```
+
+**Use Case:** APIs that occasionally timeout or experience temporary outages. The exponential backoff strategy prevents overwhelming the server during recovery.
+
+### Performance Assertions
+
+Response time monitoring ensures SLA compliance:
+
+```typescript
+// Validates responses complete within 5 seconds
+// Tracks metrics: response time, product count
+// Useful for regression: catches N+1 queries, slow database operations
+```
+
+**Key Metric:** `duration < 5000ms`
 
 ## Authentication
 

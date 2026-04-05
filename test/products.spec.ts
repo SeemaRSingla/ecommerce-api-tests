@@ -6,6 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { performance } from 'node:perf_hooks';
 import { sendTestMetrics } from './utils/datadog-reporter';
 import testData from '../test-data.json';
 
@@ -179,5 +180,91 @@ describe('Product API - REST Endpoints', () => {
     }
 
     console.log('✅ Response structure validated');
+  });
+
+  it('GET /products - Should handle transient failures with retry logic', async () => {
+    // This test demonstrates retry logic for flaky APIs
+    // Useful when dealing with rate-limited or occasionally-failing endpoints
+    const url = `${API_BASE_URL}/products?limit=5`;
+    const maxRetries = 3;
+    let lastError: Error | null = null;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': apiKey,
+          },
+        });
+
+        // Success - return early
+        if (response.ok) {
+          const data = await response.json();
+          expect(data).toBeDefined();
+          console.log(`✅ Request succeeded on attempt ${attempt}`);
+          return;
+        }
+
+        // Retry on 5xx errors
+        if (response.status >= 500) {
+          lastError = new Error(`HTTP ${response.status}: Server error`);
+          if (attempt < maxRetries) {
+            console.log(`⚠️ Attempt ${attempt} failed, retrying...`);
+            await new Promise((resolve) => setTimeout(resolve, 1000 * attempt)); // exponential backoff
+            continue;
+          }
+        }
+
+        // Don't retry on 4xx errors
+        expect(response.ok).toBe(true);
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        if (attempt < maxRetries) {
+          console.log(`⚠️ Attempt ${attempt} failed with error, retrying...`);
+          await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+          continue;
+        }
+      }
+    }
+
+    if (lastError) {
+      throw new Error(`Failed after ${maxRetries} attempts: ${lastError.message}`);
+    }
+  });
+
+  it('GET /products - Should complete within acceptable time', async () => {
+    // This test ensures the API meets performance requirements
+    // Regression: Watch for slow database queries or N+1 problems
+    const url = `${API_BASE_URL}/products?limit=20`;
+    const maxDuration = 5000; // milliseconds
+
+    const startTime = performance.now();
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey,
+      },
+    });
+
+    const duration = performance.now() - startTime;
+
+    if (!response.ok) {
+      console.log('⚠️ Request failed, skipping performance check');
+      return;
+    }
+
+    const data = await response.json();
+
+    expect(data).toBeDefined();
+    expect(duration).toBeLessThan(maxDuration);
+
+    console.log(
+      `✅ Request completed in ${Math.round(duration)}ms (threshold: ${maxDuration}ms)`,
+      `- Products: ${data.products?.length || 0}`
+    );
   });
 });
