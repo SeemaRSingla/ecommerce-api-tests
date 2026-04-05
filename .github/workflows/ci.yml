@@ -38,6 +38,8 @@ jobs:
       - name: Run tests with mock server
         env:
           NODE_OPTIONS: '--loader ts-node/esm --no-warnings'
+          API_URL: http://localhost:4000
+          GRAPHQL_URL: http://localhost:4000/graphql
         run: |
           # Start mock server
           npm run mock-server > /tmp/mock-server.log 2>&1 &
