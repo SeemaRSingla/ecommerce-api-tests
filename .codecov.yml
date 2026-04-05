@@ -2,16 +2,16 @@ codecov:
   require_ci_to_pass: yes
   precision: 2
   round: down
-  layout: "reach,diff,flags,tree"
+  layout: 'reach,diff,flags,tree'
   show_contextual_notes: yes
 
 coverage:
   precision: 2
   round: down
-  range: "70...100"
+  range: '70...100'
 
 ignore:
-  - "node_modules"
-  - "test"
-  - "coverage"
-  - "**/*.spec.ts"
+  - 'node_modules'
+  - 'test'
+  - 'coverage'
+  - '**/*.spec.ts'
